@@ -1,8 +1,8 @@
 import time
-
 import gym
 import numpy as np
 import tqdm
+import pygame
 
 from overcooked_ai_py.mdp.actions import Action
 from overcooked_ai_py.mdp.overcooked_mdp import (
@@ -20,6 +20,7 @@ from overcooked_ai_py.planning.planners import (
     MotionPlanner,
 )
 from overcooked_ai_py.utils import append_dictionaries, mean_and_std_err
+from overcooked_ai_py.visualization.state_visualizer import StateVisualizer
 
 DEFAULT_ENV_PARAMS = {"horizon": 400}
 
@@ -717,6 +718,13 @@ class Overcooked(gym.Env):
         self.action_space = gym.spaces.Discrete(len(Action.ALL_ACTIONS))
         self.reset()
 
+        # PyGame initialization for graphical rendering
+        pygame.init()
+        self.state_visualizer = StateVisualizer()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode(self.state_visualizer.render_state(self.base_env.state, self.base_env.mdp.terrain_mtx).get_size())
+        pygame.display.set_caption("Overcooked-AI Visualization")
+
     def _setup_observation_space(self):
         dummy_mdp = self.base_env.mdp
         dummy_state = dummy_mdp.get_standard_start_state()
@@ -793,4 +801,17 @@ class Overcooked(gym.Env):
         }
 
     def render(self, mode="human", close=False):
-        pass
+        pygame.event.get()
+        rendered_image = self.state_visualizer.render_state(self.base_env.state, self.base_env.mdp.terrain_mtx)
+        if mode == "human":
+            self.screen.blit(rendered_image, (0, 0))
+            pygame.display.flip()
+            self.clock.tick(5)
+        elif mode == "rgb_array":
+            return rendered_image
+
+    def close(self) -> None:
+        """
+        Close the environment.
+        """
+        pygame.quit()
