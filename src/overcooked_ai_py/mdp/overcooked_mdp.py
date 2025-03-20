@@ -2615,9 +2615,6 @@ class OvercookedGridworld(object):
 
                 player_i_position (length 2)
         """
-        print("+"*20)
-        print(overcooked_state.__dict__)
-        print("+"*20)
         all_features = {}
 
         def concat_dicts(a, b):
@@ -2634,7 +2631,6 @@ class OvercookedGridworld(object):
             if held_obj_name == name:
                 obj = held_obj
                 feat_dict["p{}_closest_{}".format(i, name)] = (0, 0)
-                print("p{}_closest_{}".format(i, name), ": ", feat_dict["p{}_closest_{}".format(i, name)])
             else:
                 loc, deltas = self.get_deltas_to_closest_location(
                     player, locations, mlam
@@ -2642,7 +2638,6 @@ class OvercookedGridworld(object):
                 if loc and overcooked_state.has_object(loc):
                     obj = overcooked_state.get_object(loc)
                 feat_dict["p{}_closest_{}".format(idx, name)] = deltas
-                print("p{}_closest_{}".format(idx, name), ": ", feat_dict["p{}_closest_{}".format(idx, name)])
 
             if name == "soup":
                 num_onions = num_tomatoes = 0
@@ -2656,8 +2651,6 @@ class OvercookedGridworld(object):
                 feat_dict["p{}_closest_soup_n_tomatoes".format(i)] = [
                     num_tomatoes
                 ]
-                print("p{}_closest_soup_n_onions".format(i), ": ", feat_dict["p{}_closest_soup_n_onions".format(i)])
-                print("p{}_closest_soup_n_tomatoes".format(i), ": ", feat_dict["p{}_closest_soup_n_tomatoes".format(i)])
 
             return feat_dict
 
@@ -2671,51 +2664,28 @@ class OvercookedGridworld(object):
                 feat_dict["p{}_closest_pot_{}_exists".format(idx, pot_idx)] = [
                     0
                 ]
-                print("p{}_closest_pot_{}_exists".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_exists".format(idx, pot_idx)])
                 feat_dict[
                     "p{}_closest_pot_{}_is_empty".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_is_empty".format(idx, pot_idx), ": ", feat_dict[
-                    "p{}_closest_pot_{}_is_empty".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_is_full".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_is_full".format(idx, pot_idx), ": ", feat_dict[
-                    "p{}_closest_pot_{}_is_full".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_is_cooking".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_is_cooking".format(idx, pot_idx), ": ", feat_dict[
-                    "p{}_closest_pot_{}_is_cooking".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_is_ready".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_is_ready".format(idx, pot_idx),": ",feat_dict[
-                    "p{}_closest_pot_{}_is_ready".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_num_onions".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_num_onions".format(idx, pot_idx), ": ", feat_dict[
-                    "p{}_closest_pot_{}_num_onions".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx), ": ",feat_dict[
-                    "p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx)
-                ])
                 feat_dict[
                     "p{}_closest_pot_{}_cook_time".format(idx, pot_idx)
                 ] = [0]
-                print("p{}_closest_pot_{}_cook_time".format(idx, pot_idx),": ",feat_dict[
-                    "p{}_closest_pot_{}_cook_time".format(idx, pot_idx)
-                ])
                 feat_dict["p{}_closest_pot_{}".format(idx, pot_idx)] = (0, 0)
-                print("p{}_closest_pot_{}".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}".format(idx, pot_idx)])
                 return feat_dict
 
             # Get position information
@@ -2743,39 +2713,28 @@ class OvercookedGridworld(object):
 
             # Encode pot and soup info
             feat_dict["p{}_closest_pot_{}_exists".format(idx, pot_idx)] = [1]
-            print("p{}_closest_pot_{}_exists".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_exists".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}_is_empty".format(idx, pot_idx)] = [
                 is_empty
             ]
-            print("p{}_closest_pot_{}_is_empty".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_is_empty".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}_is_full".format(idx, pot_idx)] = [
                 is_full
             ]
-            print("p{}_closest_pot_{}_is_full".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_is_full".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}_is_cooking".format(idx, pot_idx)] = [
                 is_cooking
             ]
-            print("p{}_closest_pot_{}_is_cooking".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_is_cooking".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}_is_ready".format(idx, pot_idx)] = [
                 is_ready
             ]
-            print("p{}_closest_pot_{}_is_ready".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_is_ready".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}_num_onions".format(idx, pot_idx)] = [
                 num_onions
             ]
-            print("p{}_closest_pot_{}_num_onions".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_num_onions".format(idx, pot_idx)])
             feat_dict[
                 "p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx)
             ] = [num_tomatoes]
-            print("p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx), ": ", feat_dict[
-                "p{}_closest_pot_{}_num_tomatoes".format(idx, pot_idx)
-            ])
             feat_dict["p{}_closest_pot_{}_cook_time".format(idx, pot_idx)] = [
                 cook_time_remaining
             ]
-            print("p{}_closest_pot_{}_cook_time".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}_cook_time".format(idx, pot_idx)])
             feat_dict["p{}_closest_pot_{}".format(idx, pot_idx)] = deltas
-            print("p{}_closest_pot_{}".format(idx, pot_idx), ": ", feat_dict["p{}_closest_pot_{}".format(idx, pot_idx)])
             return feat_dict
 
         IDX_TO_OBJ = ["onion", "soup", "dish", "tomato"]
@@ -2790,7 +2749,6 @@ class OvercookedGridworld(object):
             all_features["p{}_orientation".format(i)] = np.eye(4)[
                 orientation_idx
             ]
-            print("p{}_orientation".format(i), ": ",all_features["p{}_orientation".format(i)])
             obj = player.held_object
 
             if obj is None:
@@ -2802,7 +2760,6 @@ class OvercookedGridworld(object):
                 all_features["p{}_objs".format(i)] = np.eye(len(IDX_TO_OBJ))[
                     obj_idx
                 ]
-            print("p{}_objs".format(i),": ",all_features["p{}_objs".format(i)])
 
             # Closest feature for each object type
             all_features = concat_dicts(
@@ -2879,7 +2836,6 @@ class OvercookedGridworld(object):
                 all_features["p{}_wall_{}".format(i, direction)] = (
                     [0] if feat == " " else [1]
                 )
-                print("p{}_wall_{}".format(i, direction), ": ", all_features["p{}_wall_{}".format(i, direction)])
 
         # Convert all list and tuple values to np.arrays
         features_np = {k: np.array(v) for k, v in all_features.items()}
@@ -2898,7 +2854,6 @@ class OvercookedGridworld(object):
                 for k, v in features_np.items()
                 if k[:2] == "p{}".format(i)
             }
-            # print(f"_______ {player_i} ________>   ", player_i_dict)
             features = np.concatenate(list(player_i_dict.values()))
             abs_pos = np.array(player_i.position)
 
@@ -2915,9 +2870,7 @@ class OvercookedGridworld(object):
 
             player_features.append(features)
             player_absolute_positions.append(abs_pos)
-            print("p{}_abs_pos".format(i), ": ", abs_pos)
             player_relative_positions.append(rel_pos)
-            print("p{}_rel_pos".format(i), ": ", rel_pos)
 
         # Compute a symmetric, player-centric encoding of features for each player
         ordered_features = []
@@ -2928,8 +2881,6 @@ class OvercookedGridworld(object):
             other_player_features = np.concatenate(
                 [feats for j, feats in enumerate(player_features) if j != i]
             )
-            print("p{}_other_player_features".format(i), ": ", other_player_features)
-            print("\t\t=> ", player_i_features.shape[0], player_features[1].shape[0])
             player_i_ordered_features = np.squeeze(
                 np.concatenate(
                     [
@@ -2940,15 +2891,7 @@ class OvercookedGridworld(object):
                     ]
                 )
             )
-            print(player_i_features.shape)
-            print(other_player_features.shape)
-            print(player_i_rel_pos.shape)
-            print(player_i_abs_pos.shape)
-
             ordered_features.append(player_i_ordered_features)
-        print("-"*20)
-        print(len(ordered_features), len(ordered_features[0]))
-        print("-"*20)
         return ordered_features
 
     def get_deltas_to_closest_location(self, player, locations, mlam):
