@@ -4,6 +4,7 @@ import numpy as np
 import tqdm
 import pygame
 
+import pygame.surfarray as surfarray
 from overcooked_ai_py.mdp.actions import Action
 from overcooked_ai_py.mdp.overcooked_mdp import (
     EVENT_TYPES,
@@ -808,7 +809,7 @@ class Overcooked(gym.Env):
             pygame.display.flip()
             self.clock.tick(5)
         elif mode == "rgb_array":
-            return rendered_image
+            return np.fliplr(np.rot90(surfarray.array3d(rendered_image), k=-1))
 
     def close(self) -> None:
         """
