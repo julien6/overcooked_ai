@@ -128,7 +128,8 @@ class OvercookedEnv(object):
         assert isinstance(mdp, OvercookedGridworld)
         if num_mdp is not None:
             assert num_mdp == 1
-        mdp_generator_fn = lambda _ignored: mdp
+
+        def mdp_generator_fn(_ignored): return mdp
         return OvercookedEnv(
             mdp_generator_fn=mdp_generator_fn,
             start_state_fn=start_state_fn,
@@ -650,7 +651,7 @@ class OvercookedEnv(object):
             ):
                 if traj_timestep >= stuck_time:
                     recent_states = obs[
-                        traj_timestep - stuck_time : traj_timestep + 1
+                        traj_timestep - stuck_time: traj_timestep + 1
                     ]
                     recent_player_pos_and_or = [
                         s.players[agent_idx].pos_and_or for s in recent_states
@@ -718,13 +719,6 @@ class Overcooked(gym.Env):
         self.observation_space = self._setup_observation_space()
         self.action_space = gym.spaces.Discrete(len(Action.ALL_ACTIONS))
         self.reset()
-
-        # PyGame initialization for graphical rendering
-        pygame.init()
-        self.state_visualizer = StateVisualizer()
-        self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode(self.state_visualizer.render_state(self.base_env.state, self.base_env.mdp.terrain_mtx).get_size())
-        pygame.display.set_caption("Overcooked-AI Visualization")
 
     def _setup_observation_space(self):
         dummy_mdp = self.base_env.mdp
@@ -802,12 +796,28 @@ class Overcooked(gym.Env):
         }
 
     def render(self, mode="human", close=False):
-        pygame.event.get()
-        rendered_image = self.state_visualizer.render_state(self.base_env.state, self.base_env.mdp.terrain_mtx)
+        if not hasattr(self, "_render_initialized"):
+            pygame.init()
+            self.state_visualizer = StateVisualizer()
+            self.clock = pygame.time.Clock()
+            self._render_initialized = True
+            self._display_initialized = False
+
+        rendered_image = self.state_visualizer.render_state(
+            self.base_env.state, self.base_env.mdp.terrain_mtx)
+
         if mode == "human":
+            if not self._display_initialized:
+                self.screen = pygame.display.set_mode(
+                    rendered_image.get_size())
+                pygame.display.set_caption("Overcooked-AI Visualization")
+                self._display_initialized = True
+
+            pygame.event.get()
             self.screen.blit(rendered_image, (0, 0))
             pygame.display.flip()
             self.clock.tick(5)
+
         elif mode == "rgb_array":
             return np.fliplr(np.rot90(surfarray.array3d(rendered_image), k=-1))
 
